@@ -34,7 +34,9 @@
     "next-mdx-remote": "^4.1.0",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "rehype-decorate": "1.0.0-rc.3",
+    "remark-comment-config": "^7.0.1"
   },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",

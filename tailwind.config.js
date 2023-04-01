@@ -8,6 +8,11 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
+            maxWidth: '120ch', // add required value here
+            '> ul > li > p:first-child': {
+              marginTop:0,
+              marginBottom:0
+            },
             color: theme('colors.gray.700'),
             a: {
               color: theme('colors.blue.500'),
@@ -62,6 +67,10 @@ module.exports = {
                 borderBottomColor: theme('colors.gray.700'),
               },
             },
+            '> ul > li p': {
+              marginTop:0,
+              marginBottom:0
+            }
           },
         },
       }),
