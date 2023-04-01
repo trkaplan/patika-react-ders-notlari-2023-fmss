@@ -1,0 +1,320 @@
+---
+title: Hafta -1 
+description: "İçerik: Giriş - (11 konu)"
+date: '2023-03-26'
+---
+
+## React Eğitimi Giriş Notlar
+
+### 01 - Neden React
+Kolay kodlama, browserda render performansı, geniş ekosistem, mimari olarak özgürlük (minimal built-in kütüphane yapısı, angular'daki gibi temel ihtiyaçlar built-in gelmiyor, ihtiyaca göre alterntiflerden birisi seçiliyor)
+Arayüz kodlamada declerative yaklaşımla daha kolay anlaşılır ve yazılır kodlama imkanı. (https://www.explainprogramming.com/theory/imperative-declarative-react/)
+
+Statik HTML bir ekranın react'e dönüştürülmesi:
+https://www.freecodecamp.org/news/intro-to-react-components/ 
+
+Bileşene çevirme mantığı (*Resim 1: Arayüz örneği, *Resim 2: Arayüzün bileşenlere parçalanmış hali)
+Kaynak: https://react.dev/learn/thinking-in-react
+{/* TODO tkaplan istediğim imajlara bir class eklemek istiyorum. Örneğin alttaki imaja {.my-special-image}'ı ekleyince derlendiğinde bu img elemanı bu class'a sahip olabilecek.  */}
+![image](https://react.dev/images/docs/s_thinking-in-react_ui.png)
+Resim 1: Arayüz örneği
+
+![image](https://react.dev/images/docs/s_thinking-in-react_ui_outline.png)
+Resim 2: Arayüzün bileşenlere parçalanmış hali
+
+Örnek bir TODO app'in pure Javascript ile ve React ile yazılış şekilleri:
+{/* TODO tkaplan Alttaki iki kod bloğunu geniş ekranlarda yan yana göstermek istiyorum. */}
+
+
+```jsx:todo-app-sample.jsx
+import React, { useState } from "react";
+
+function App() {
+  const [todos, setTodos] = useState([]);
+
+  function addTodo() {
+    setTodos([...todos, "New Todo"]);
+  }
+
+  return (
+    <div>
+      <h1>Todo List</h1>
+      <ul>
+        {todos.map((todo, index) => (
+          <li key={index}>{todo}</li>
+        ))}
+      </ul>
+      <button onClick={addTodo}>Add Todo</button>
+    </div>
+  );
+}
+
+export default App;
+```
+
+```html:todo-app-js-sample.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+  </head>
+  <body>
+    <h1>Todo List</h1>
+    <ul id="todo-list"></ul>
+    <button id="add-todo">Add Todo</button>
+
+    <script>
+      var todos = [];
+
+      function addTodo() {
+        todos.push("New Todo");
+        renderTodos();
+      }
+
+      function renderTodos() {
+        var todoList = document.getElementById("todo-list");
+        todoList.innerHTML = "";
+        todos.forEach(function(todo, index) {
+          var todoItem = document.createElement("li");
+          todoItem.textContent = todo;
+          todoList.appendChild(todoItem);
+        });
+      }
+
+      document.getElementById("add-todo").addEventListener("click", addTodo);
+    </script>
+  </body>
+</html>
+```
+
+### 02 - Real DOM vs Virtual DOM vs Shadow DOM
+DOM: döküman obje modeli. ağaç yapısı elemanların ekranda ham haliyle nasıl görüneceği, bir diğerinin altında, üstünde, başkasının içinde ya da kendi içinde başka bir elemanın yer alabileceği şekilde tanımlayabildiğimiz model. Browserlar içindeki DOM API'si ile DOM ağaçlarını yönetip, ağaç içinde sorgulama yapabiliyoruz. 
+Detaylı bilgi: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
+
+// Göster: React ile yazılmış bir sayfa açıp, Kaynağı görüntülediğimizde gelen kod ile F12 Dev Tools'un Inspector sekmesinde gördüğümüz DOM ağacı.
+
+Real DOM, F12 dev tools'da gördüğümüz, Virtual DOM ise, react'ın bir obje olarak sakladığı ve render ihtiyacı olduğunda değişmeden önceki ve değişimden sonraki karşılaştırma (diff / compare) için kullandığı DOM.
+
+
+Shadow DOM örneği: 
+önizleme: https://l29vvm3z67.csb.app/
+https://codesandbox.io/s/l29vvm3z67
+
+
+### 03 - IDE Text Editor
+- *VS Code*, Typescipt ile yazılmış open source cross platform
+#### Eklentiler
+- Farklı kategorilerde bazı eklenti örnekleri:
+    - Geliştiriğiniz dille ilgili (örneğin Angular kullananmaya başladıysanız, Angular Language Sercice gibi bir eklenti) 
+    - Kullandığınız teknolojilere özel (örneğin projede docker varsa docker ile ilgili bir eklenti) 
+    - manuel yapılan işlemleri otomatize etmek için ihtiyaç duyabileceğiniz snippet kütüphaneleri ya da dökümanyasyon/ipucu amaçlı eklentiler.
+
+Bazı kullanışlı eklentiler:
+- GitLens
+- VS Code ES7+ React/Redux/React-Native/JS snippets
+- Tailwind CSS Intellisense
+- Tailwind Docs
+- Jest Runner
+
+#### Komut Paleti (CTRL + SHIFT + P)
+Editor içindeki komutların listesine ve ayarlara hızlı erişim için kullanılır. Aynı zamanda eklediğiniz eklentilerle gelen komutlar da burada listelenmeye başlar.
+
+#### Kullanışlı Kısayollar
+- Komut Paleti: CTRL + SHIFT + P
+- Sol Palet Aç/Kapa: CTRL + B
+- Alt Palet Aç/Kapa: CTRL + J
+- Comment Ekle/Kaldır: Ctrl+/ * Örneğin bu komutun kısayolunu öğrenmek istiyoruz, CTRL + SHIFT + P ile komut paletini açıp toggle comment yazınca iki çeşit comment bırakma seçeneğini olduğunu ve bunlara ait kısayolları (sağda) görebiliyoruz.
+<Image
+  alt={`VS Code Komut Paletinden komut kısayolunu öğrenme`}
+  src={`/images/vs-code-komutlari-kisayollari.png`}
+  width="608"
+  height="117"
+  priority />
+- Bir değişkenin tanımlandığı satıra gitme: CTRL + Click
+- Satırı bir alta/üste kopyala: ALT + SHIFT + Aşağı/Yukarı Ok
+- Dosyalarda Ara: CTRL + SHIFT + F
+
+LTS long term support
+kurduktan sonra node -v ile sürümünü görebilirsiniz. npm de kuruluyor, nodejs tabanlı paket yönetim aracı 
+termianller
+- windowsla gelen cmd Command Prompt
+- Gitle gelen shell var.
+- iTerm (bazıları daha konforlu)
+- Cmder
+
+Ama indirdiğimiz bir proje ya da şirketteki eski bir proje mevcut node sürümü ile çalışmayabilir.
+Bu projeyi çalıştırmayı denediğinizde aldığınız hatadan anlayıp, ilgili node sürümünü kurmaya çalıştığınızda işinize yarayacaktır. 
+
+Bazen temel şeylerde sorun yaşayıp enerjilerini harcayıp vaz geçme yoluna kadar gidebilen olabilir.
+
+nvm yi göster 
+
+https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/
+
+### 04 - NodeJS Kurulum
+
+LTS long term support
+
+Kurulumdan sonra terminalden `node -v` komutu ile kullandığınız sürümü görebilirsiniz. `npm`(nodejs tabanlı paket yönetim aracı) de beraberinde kuruluyor.
+
+*Terminaller*
+- Windowsla gelen cmd Command Prompt / Powershell / Git ile beraber kurulan Git Shell
+- iTerm
+- Cmder
+- Warp (Sadece MAC OS'da mevcut)
+
+Kendi geliştirdiğimiz proje haricinde indirdiğimiz bir örnek proje ya da şirketteki eski bir proje mevcut node sürümü ile çalışmayabilir.
+Bu projeyi çalıştırmayı denediğinizde aldığınız hatayı arattığınızda farklı bir node sürümüne ihtiyaç duyduğunuzu anlayabilirsiniz.
+Böyle durumlarda; nvm (Node Version Manager) e ihtiyaç duyarız.
+https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/
+
+### 05 - Temel NodeJS
+
+NPM aslında 3 parça:
+
+the website
+the Command Line Interface (CLI)
+the registry
+
+
+npm paketleri
+``pm init`n` ile bir javascript projesi oluşturalım (aslında bir npm paketi)
+Klasörde bir package.json dosyası oluşur. Bu dosya, projede kullanılacak harici kütüphanelerinin listesini, scriptleri ve proje ayarlarını içerir.
+
+bir de `npx` komutu var:
+Paketleri indirip çalıştırdıktan sonra silen, yani inen paketin aslında projenizde kalmasına gerek olmadığı durumlarda kullanılır. (Bilgisayar programlarının setup dosyaları gibi düşünülebilir) 
+
+Örneğin bir nextJS projesini kurmak için:
+`npx create-next-app`
+
+Oluşan `package.json` dosyasını inceleyelim:
+Tek bir script (`test`) var ama gerçek projelerde birden fazla script olur. Örneğin: `dev`, `build`, `test`, `lint` vs gibi. Bu scriptlere parametre geçilebilir. Mesela test amaçlı kendi bilgisayarımızdaki geliştirme ortamı ile canlıya atacağımız build paketinde kullanacağımız servis adreslerinin farklı olduğu durumda farklı parametreler geçilebilir.
+
+Bir npm paketi kurup deneyelim:
+https://www.npmjs.com/package/slugify
+`npm i slugify`
+
+`package.json` içinde görebiliyoruz, yanında sürümü de geldi. (başında şapka ikonu var!)
+
+*ÖNEMLİ: .gitignore!*
+Bu dosyayı oluşturup içine `node_modules/` yazarak `node_modules` klasörünün git'e dahil olmasını engelliyoruz.
+Bu klasörün taşınmasına, commitlenmesine gerek yok.
+Oluşturduğunuz projenin bir bilgisayarda çalışması için önce `npm i` komutunu çalıştırmak yeterli.
+
+Yüklediğimiz paketi nasıl kullancaz?
+Repo'sundaki README'de yazdığı şekilde import edip fonksiyonu çalıştırıyoruz.
+(Parametre de alıyor, istersek tire yerine * olması için "*" parametresini geçebiliriz.)
+
+*Bonus:*
+Online npm paketlerini hızlıca deneyebileceğiniz site:
+https://npm.runkit.com/
+Ya da codesandbox üzerinde proje oluşturup bağımlılık tanımlamak mümkün. 
+
+### 06 - ES6 Modul Sistemi
+Önceki konuda projemizde bir npm paketi kullanmak istedik.. paketi `require` ile import etmiştik. Şimdi `import` ile projeye eklemeyi aktifleştireceğiz.
+Bunun için package.json'a `type:"module"` u ekliyoruz. (Dosya: `01-05-Temel-Node-JS/_package.json`)
+
+Javascript'teki modern modül yapısında, yani Ecmascript'in güncel sürümlerinde `import` kullanıyoruz.
+
+**📄 ÖRNEK PROJE:** *code_samples/01-06-ES6-Modul-Sistemi/*
+
+#### Arrow function ile regular function Farkı ####
+Bu başlıkta geçen arrow function ile regular function farkı konusuyla ilgili kod örnekleri:
+
+```JS:object-icinde-this
+const Person = {
+  name: 'Alice',
+  greet: function () {
+    console.log(`Hello, my name is ${this.name}.`);
+  }
+};
+
+obj.greet(); // Konsol çıktısı: "Hello, my name is Alice."
+
+
+const Person = {
+  name: 'Alice',
+  greet: () => {
+    console.log(`Hello, my name is ${this.name}.`);
+  }
+};
+
+obj.greet(); // Konsol çıktısı: "Hello, my name is undefined."
+```
+
+**💡 CHATGPT'ye sorun:**
+*Arrow function ile regular function'ın farkları nelerdir?*
+
+**Diğer farklılık:**
+İki fonksyionu call/apply methodları ile çağırdığımızda, arrow function içinde this'e erişim olmadığını görüyoruz:
+
+```javascript:call-apply-ornegi
+const alice = { name: 'Alice', age: 30 };
+
+const sayHelloArrow = () => { // arrow function
+  console.log(`Hello, my name is ${this.name}. My age is ${this.age}.`);
+}
+const sayHelloRegular = function(){ // regular function
+  console.log(`Hello, my name is ${this.name}. My age is ${this.age}.`);
+}
+
+sayHelloArrow.call(alice);  // logs "Hello, my name is undefined. My age is undefined." 
+sayHelloArrow.apply(alice); // logs "Hello, my name is undefined. My age is undefined."
+
+sayHelloRegular.call(alice);  // logs "Hello, my name is Alice. My age is 30."
+sayHelloRegular.apply(alice); // logs "Hello, my name is Alice. My age is 30."
+```
+
+
+### 07 - Callback Aync / Await
+Bir fonksiyona parametre olarak geçirilen ve bu fonksiyonun işlemi tamamladığında çağrılacak olan başka bir fonksiyona "callback" adı verilir. 
+
+**📄 ÖRNEK PROJE:** * code_samples/01-07-callback-async-await/ *
+
+### 08 - Axios
+
+Fetch yerine gerçek hayatta daha yaygın olarak axios kütüphanesini kullanalım.
+Önceki başlıktaki örnek projede fetch kullanırken ihtiyaç duyulan extra bir await'e ve json() methodu çağırılmasına ihtiyaç yok.
+
+`npm i axios`ile projemize npm paketini kuralım
+
+paketi import ettikten sonra `fetch` leri de `axios` a çevirelim.
+```javascript
+async function getData() {
+    const data = await axios("https://jsonplaceholder.typicode.com/users/1")
+    console.log("user yüklendi", data);
+
+    const post1 = await axios("https://jsonplaceholder.typicode.com/posts/1")
+    console.log("post 1 yüklendi", post1);
+    
+    const post2 = await axios("https://jsonplaceholder.typicode.com/posts/2")
+    console.log("post 2 yüklendi", post2);
+}
+```
+
+Dönen yanıt kompleks bir JSON, biz sadece kullanıcı datasını içeren bir json bekliyorduk:
+
+Ne döndüğüne bir bakalım Google'dan: `axios response` araması sonucu kendi sayfasındaki (https://axios-http.com/docs/res_schema) şemada görüldüğü üzere sunucudan gelen verinin `data` anahtarında bulunduğunu öğrendik.
+
+```JS
+const data = await axios("https://jsonplaceholder.typicode.com/posts/2").data;
+
+// object destructring ile bunu şu şekilde yazmak daha temiz bir yöntem:
+const { data } = await axios("https://jsonplaceholder.typicode.com/posts/2");
+
+// Ama biz data yerine myData isimli bir değişkene atama yapmak istiyorsak şu şekilde:
+const { data:myData } = await axios("https://jsonplaceholder.typicode.com/posts/2");
+```
+
+**📄 ÖRNEK PROJE:** * code_samples/01-08-axios/ *
+
+**📦 BONUS:** * Axios'un öne çıkan özelliklerinden birisi interceptorlar. Buradaki örnekleri inceleyelim: https://masteringjs.io/tutorials/axios/interceptors
+
+### 09 - Promises
+
+**📄 ÖRNEK PROJE:** * code_samples/01-09-promises/ *
+
+### 10 - Array Functions
+
+**📄 ÖRNEK PROJE:** * code_samples/01-10-array-functions/ *
