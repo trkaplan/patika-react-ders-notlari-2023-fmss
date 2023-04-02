@@ -12,6 +12,7 @@ export const About = (): JSX.Element => {
       <p>Bu site Patika  <a target="_blank" rel="noreferrer" href="https://www.patika.dev/bootcamp/fmss-bilisim-front-end-practicum">FMSS React Practicum Mart 2023</a> grubu öğrencileri için kursu destekleyici amaçla hazırlanmıştır.</p>
       <p>Patika&apos;nın <a target="_blank" rel="noreferrer" href="https://app.patika.dev/paths/orta-seviye-frontend-web-development-patikasi">Orta Seviye Frontend Web Development Patikası</a> altındaki <a href='https://app.patika.dev/courses/react'>React dersi</a> takip edilmiştir. </p>
       
+      <p>Kullanılan kod örneklerine <a href="https://github.com/trkaplan/patika-react-ders-notlari-2023-fmss-code-samples">şu repodan</a> ulaşabilirsiniz:</p>
       <p>Eğitmen: Tuncay Kaplan</p>
       <div>
         <a href="https://github.com/trkaplan" target="_blank" rel="noreferrer" className="block mb-2">
