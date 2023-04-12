@@ -1,0 +1,247 @@
+---
+title: 'Hafta - 2'
+description: 'İçerik: CRA/NextJS + Tailwind + Prettier, Components, Props, States, Lifecycle, Contacts App'
+date: '2023-04-02'
+---
+
+## Components
+
+### 01 - Bir React Projesini Ayağa Kaldırmak
+
+#### CRA NEDİR, NEXTJS NEDİR?
+
+**CRA (Create React App)** React uygulamaları oluşturmak için bir boilerplate'tir.
+Kullanıma hazır, önceden yapılandırılmış, webpack, babel ve dev server gibi gerekli araçları ve konfigürasyonları içeren bir geliştirme ortamı kurar.
+Geliştiricilerin React bileşenleri kodlamasına odaklanmalarını sağlıyordu.
+
+Ama Sonrasında react tabanlı farklı projeler ve yaklaşımlar çıktı.Next.js, Gatsby ve Remix (SSR,SSG, ISR ( Incremental Static Regeneration)
+CRA sadece client side rendering desteklediğinden iyi bir kullanıcı deneyimi ve performans sunamıyordu.
+Geliştiriciler için de dev ortamında daha hızlı çalışabilecekleri vite gibi alternatif teknolojiler çıkmıştı.
+
+Bu gibi sebeplerden dolayı Facebook react projeleri için kalıp (boilerplate) olarak CRA'yı yerine farklı çözümlerin kullanılmasını öneriyor. (https://react.dev/learn/start-a-new-react-project)
+
+Biz bu eğitimde bu seçeneklerden NextJS üzerinden ilerleyeceğiz.
+
+Detaylı içerik: [CRA Neden Sonlandırıldı ? - Onur Dayıbaşı Blog](https://medium.com/frontend-development-with-js/cra-create-react-app-neden-sonland%C4%B1r%C4%B1ld%C4%B1-bir-nevi-%C3%B6ld%C3%BCr%C3%BCld%C3%BC-76edd054e9c)
+
+### 02 - NEXT.JS KURULUMU
+
+https://react.dev/ -> Learn React -> Installation -> [How to start a new React project](https://react.dev/learn/start-a-new-react-project)
+
+`npx create-next-app`
+Not: komutu çalıştırmadan önce terminal projenin kurulacağı konumda olmalı. (`cd` ile konum değiştirebilirsiniz)
+
+Kurulum başladığında gelen sorulardan ilki proje adını sorar varsayılan adı `my-app` dir. Bunu değiştirebilir ya da enter'a basarak geçebilirsiniz.
+
+```bash
+✔ What is your project named? … `my-app`
+✔ Would you like to use TypeScript with this project? … No / `Yes`
+✔ Would you like to use ESLint with this project? … No / `Yes`
+✔ Would you like to use `src/` directory with this project? … `No` / Yes
+✔ Would you like to use experimental `app/` directory with this project? … `No` / Yes
+✔ What import alias would you like configured? … `@`/*
+```
+
+**Soruların Açıklamaları:**
+
+- Typescipt artık varsayılan dil olarak geliyor, iyi bir pratik olduğu için Typescipt'i tercih ediyoruz.
+- ESLint yaygın kodlama hatalarını statik olarak tespit eden bir araç, bu da iyi bir pratik olduğundan varsayılan olarak Yes geliyor.
+- `src` klasör seçeneğini sorma amacı; CRA'da kodlar `src` klasörü altında olduğundan, CRA projesini next'e taşımak isteyenler için kolaylık olması açısından soruluyor.
+- Yeni routing ve rendering özelliğini kullanmak istemediğimiz için `app` klasörü seçeneğini No olarak bırakıyoruz.
+- `@` ya da `*` takma adları (alias), alt klasörlerden üst seviyedeki başka klasördeki dosya importlarında kolaylık olması için kullanılıyor. **Örneğin:**
+
+```jsx
+import Button from ‘../../../components/button’ // yerine alttaki gibi import edebiliyoruz.
+import Button from ‘@/components/button’
+```
+
+Kurulumdan sonra `cd my-app` ile proje klasörüne giriyoruz.
+`npm run dev` komutu ile geliştirme ortamını ayağa kaldırıyoruz. Bu komutu `package.json` dosyaında `scripts` başlığı altında görebiliriz.
+Browserdan `http://localhost:3000` adresine gittiğimizde proje çalışıyor olmalı. (Eğer port meşgulse 3001 ya da 3002 gibi bir portta çalışmaya başlar.)
+
+**NOT:** `package.json`içindeki scriptste bir de `start` komutu var. Bu projeyi canlı ortama attığımızda uygulamayı orada ayağa kaldıran komuttur.
+
+#### Next.js + Tailwind CSS Boilerplate'ini kurma
+
+Tailwindcss arayüz geliştirme için kullanılan bir css framework'dür. CSS tanımları yapmak yerine elemanlara class isimleri vererek arayüzü oluşturabiliyoruz. Daha tutarlı ve güvenli bir şekilde arayüz geliştirmemizi sağlıyor.
+
+NextJS'i Tailwind CSS aracı ile birlikte kurulum yapmak için, ilk yol kendi dökümantasyonunu izlemek. İkincisi ise genellikle kurulu bir nextJS projesi üzerine sonradan Tailwind konfigürasyonu eklemek için kullanılan yöntem: tailwindcss'in sitesinde nextjs'i aratarak gerekli dökümana ulaşabilirsiniz. https://tailwindcss.com/docs/guides/nextjs
+
+Sitesinden Docs'a girip arama kutusuna tailwind yazıyoruz. [Built-In CSS Support](https://nextjs.org/docs/basic-features/built-in-css-support)
+Next.js + Tailwind CSS Example linkinde yazan `npx create-next-app --tailwind with-tailwindcss-app` komutu ile kurulumu yapabiliriz.
+
+**NOT:**
+
+Bu metnin hazırlandığı tarihte bu paket henüz yayınlanmamıştı. O yüzden `npx create-next-app --tailwind with-tailwindcss-app` komutu çalışmıyor.
+Bu sebeple paketin bulunduğu `@canary` sürüm bilgisini komuta ekleyip öyle çalıştırıyoruz.
+Bunu bulma yolu: Github Issue'larında `with-tailwind` için arama yapıyoruz ve tarihe göre sıralayıp yakın zamanda açılan şu issue'ya ulaşıyoruz:
+https://github.com/vercel/next.js/issues/47593
+
+- npm ile kuranlar için:`npx create-next-app@canary --tailwind with-tailwindcss-app`
+- pnpm kullananlar için: `pnpm create next-app@canary --tailwind` (pnpm npm'e alternatif odaklı bir paket yöneticisi. https://pnpm.io/) )
+
+Kurulum bittiğinde bağımlı paketlerin içinde bulunduğu `node_modules` klasörü de oluşturulmuş oluyor.
+
+**Linkler**
+
+- VS Code için [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) eklentisi geliştirmeye yardımcı oluyor.
+- [Tailwind Docs](https://marketplace.visualstudio.com/items?itemName=adrianwilczynski.tailwind-docs) eklentisi ile de kullanmak istediğimiz CSS özelliği ile ilgili tanımlara hızlıca ulaşabiliyoruz.
+- Tailwind Döküman: https://tailwindcss.com/
+
+Örnek temaların kodları incelenerek arayüzlerin nasıl yapıldığı görülebilir.
+
+<img
+  src="/images/hafta-2/ss-tailwind-classlari.png"
+  alt="Tailwind tema örnek"
+/>
+*Tailwind ile tasarlanmış bir arayüz:* https://salient.tailwindui.com/
+
+Tailwind'ın yapımcılarının çıkardığı ikon kütüphanesi: [Heroicons](https://heroicons.com/).
+
+**CSS ve Tasarım Üzerine Notlar**
+
+Profesyonel olarak uygulama geliştirilirken arayüz tasarımlarının size Figma, Zeplin gibi platformlar üzerinden iletilir ve ekranlar bunlar baz alınarak kodlanır. [Zeplin ile iletilmiş bir ekran örneği](https://gdm-catalog-fmapi-prod.imgix.net/ProductScreenshot/904c2787-039f-40a8-b008-64f099f02f99.png)
+
+Tasarımcılar çoğunlukla özel arayüzler tasarlandığından ve iyi kullanıcı deneyimi için özel bileşenlere ihtiyaç duyulduğundan çoğunlukla hazır UI kütüphaneleri çözüm olmaz. Düz CSS (tailwind gibi bir araç kullanmadan) ile yazılan bir tema ve kodlanan bileşenlemek de başka bir dezavantajı vardır: tutarlılık kaybolabilir ve tema'da bir değişiklik istendiğinde, örneğin şirket yeni bir marka tasarımına geçmişse, arayüzlerin yenilenmesi çok maliyetli olabilir.
+
+### 03 Linter Prettier Konfigürasyonları
+
+NextJS Linter kurulu şekilde geliyor fakat Linter kod hatalarını engelleme odaklı olduğundan kodun formatlanması (tek tırnak/çift tırnak, satır sonu noktalı virgül kullanımı vs) için Prettier'a ihtiyaç duyuyoruz.
+Kurulum:
+
+- Linter içinde de bazı formatlama kuralları mevcut ama biz bu işi tamamen prettier'a devretmek için, `eslint-config-prettier` paketini kuruyoruz: `npm install --save-dev eslint-config-prettier`
+- Proje klasörümüzün içindeki `.eslintrc.json` dosyasına `"prettier"` stringini `extends` arrayine ekliyoruz. Yani son hali şu şekilde oluyor:
+
+```json
+{
+  "extends": ["next/core-web-vitals", "prettier"]
+}
+```
+
+Prettier'da özel biçimlendirme ayarlarını yapmak için, proje klasörümüzde `.prettierc` isimli bir dosya oluşturuyoruz ve içine örneğin şu kodu yazıyoruz:
+
+```json
+{
+  "singleQuote": true,
+  "semi": false,
+  "trailingComma": "all"
+}
+```
+
+**Kayıtta otomatik biçimlendirme**
+VS Code editörümüzde dosya değişikliğinden sonra kaydettiğimizde otomatik formatlama için
+VS Code Prettier pluginin kuralım: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+Projenizin içinde bir ayar daha yaparak VS Code'a prettier'ın default formatter'ı olduğunu ve değişiklikler kaydedildiğinde otomatik formatlaması gerektiğini şöyle tanımlayabiliriz. Bu ayar dosyası: `.vscode/settings.json` içeriği şu şekilde:
+
+```json
+{
+  "editor.formatOnSave": true, // kaydettiğinde otomatik formatla
+  "editor.defaultFormatter": "esbenp.prettier-vscode" // prettier'ın default formatter'ı yüklediğimiz plugin'in kayıtlı adı.
+}
+```
+
+Lint hatalarından otomatik düzeltilebileceklerin de dosya kaydında düzeltilmesini istersek şunu da ekleyebiliriz. `.vscode/settings.json` içeriği şu şekilde:
+
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
+
+Bu konuyla ilgili olarak lint-staged ve Husky konfigürasyonlarını da içeren daha kapsamlı bir döküman:https://paulintrognon.fr/blog/typescript-prettier-eslint-next-js
+
+#### SAYFA OLUŞTURMAK
+
+Sayfalar `pages` klasörü altında oluşturulur, sayfa bileşeni `default` olarak export edilmeli. (`export default function Hakkinda() {}` gibi)
+Uygulama içinde linkleme için next'in `<Link>` bileşenini kullanıyoruz çünkü HTML'in `<a>` elemanını kullandığımızda sayfa farklı bir HTML dökümanını açıyormuş gibi davranıp, kendini yenileyecektir.
+
+#### ENVIRONMENT VARIABLES KULLANIMI
+
+Uygulamamız yerelde (kendi bilgisayarımız) bir test ortamında ya da canlıya alındığında bir canlı ortamda çalışırken bazı değişkenlerin ortama göre farklı olması gerekir.
+Geliştirme yaparken bağlandığınız API ile, canlı ortamda gerçek veriler üzerinden işlem yapılabilen API ile aynı olursa yanlışlıkla bu veriler değiştirilebilir. Envirioment variables (Ortam değişkenleri) kullanılarak ortamlar için farklı API adresleri tanımlanıp bu sorunun önüne geçilebilir.
+
+**Ortam Değişkeni Tanımlama:**
+Proje klasörü içinde `.env.development` ve `.env.production` dosyaları oluşturulur ve içine `NEXT_PUBLIC_` ile başlayan değişkenler yazılır. Bu değişkenlere sayfaların içinde `process.env` nesnesi üzerinden erişilebilir. Örneğin: `console.log(process.env.NEXT_PUBLIC_MAP_API_URL)` şeklinde erişilebilir.
+Eğer bu değişkenlere Nextjs'de oluşturduğumuz bir api içinden erişmek istersek `NEXT_PUBLIC_` ön eki olmadan tanımlanan ismiyle erişiriz. Örneğin: `console.log(process.env.API_URL)` şeklinde erişilebilir.
+
+```bash:.env.development
+API_URL='https://dev.to/api/api/articles/{id}/unpublish'
+NEXT_PUBLIC_API_URL='public adres'
+```
+
+```bash:.env.production
+API_URL='https://dev.to/api/api/articles/{id}/unpublish'
+NEXT_PUBLIC_API_URL='public adres prod için'
+```
+
+NEXT*PUBLIC* ön ekinin olma sebebi yanlışlıkla özel bir değişken değerinin (örneğin ücretli kullandığımız bir API'ye ait anahtar) açık edilmesini engellemektir.
+
+İlgili link: https://nextjs.org/docs/basic-features/environment-variables
+
+**Not:** CRA'da farklı bir ön ek kullanılır: `REACT_APP_`
+
+### 04 - Git ve Github Kullanımı
+
+- Commit mesajları
+- Branch oluşturmak
+- Rafa dosya kaldırmak, raftan dosya almak (Stash)
+- Diff (farklılıkları görmek)
+- Github'da PR açmak
+- Github'da PR code review'ı, yorum eklemek
+- Github'da PR'ı yorumları resolve edip, merge etmek
+
+Not: [VS Code için GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) eklentisi ile kod içindeki satırların üzerine gelerek commit mesajlarına, commit yapan kişiye, commit tarihine, commit mesajına tıklayarak ulaşabiliriz.
+
+### 05 - NEXTJ'DE ROUTER KULLANIMI (next/router)
+
+https://nextjs.org/docs/routing/introduction
+
+Örnek projeye geçtikten sonra, `01-page-route-ekleme` branchine geçerek örnek dosyaları görebilirsiniz.
+**📄 ÖRNEK PROJE:** _ code_samples/02-05-nextjs-de-router/ _
+
+### 04 - React Developer Tools
+
+Bileşen Stillendirme
+Responsive görünüm
+Bileşen ağacını gezme, stateleri görme, bug çözerken kullanacağız
+Inspect and edit
+state'e geldiğmizde state'i de görebileceğiz.
+Network sekmesi
+console aç kapa (esc tuşu)
+![img](https://blog.logrocket.com/wp-content/uploads/2019/09/threecomponents.gif)
+
+### 08 - Typescript
+
+Örneğin third party bir bileşen yazıp open source olarak dağıtılacak ya da farklı projelerde kullanılacaksa
+eğer bir dış veri kaynağından data alıyorsa..
+
+!! örneğin zipcode yollayacağız, number mı string mi? 34500 ok fakat, 06500 => 6500
+backend ile eşleşmesi lazım
+
+### Haftanın Bonusları
+
+- Browserda JSON'ları formatlı şekilde görebilmek için (JSON Viewer eklentisi)[https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh]
+
+- Github Copilot (VSCode eklentisi)[https://copilot.github.com/]
+
+- Alternatif UI Kütüphanesi
+
+  - (Chakra UI)[https://chakra-ui.com/]
+  - (Material UI)[https://material-ui.com/]
+  - (Ant Design)[https://ant.design/]
+  - (React Bootstrap)[https://react-bootstrap.github.io/]
+  - (React Semantic UI)[https://react.semantic-ui.com/]
+  - (Reactstrap)[https://reactstrap.github.io/]
+
+- Icon kütüphaneleri
+
+  - (Font Awesome)[https://fontawesome.com/]
+  - (Heroicons)[https://heroicons.com/]
+  - (Material Icons)[https://material.io/resources/icons/?style=baseline]
+  - (React Icons)[https://react-icons.github.io/react-icons/]
+
+- React/nextjs gibi kütüphanelerin yeni sürümüne geçilirken **codemods** isimli araçlar sunularak kodun otomatik olarak güncellenmesi sağlanabilir. Nextjs için örneğin: https://beta.nextjs.org/docs/upgrade-guide/codemods
