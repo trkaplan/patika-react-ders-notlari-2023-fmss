@@ -154,6 +154,32 @@ Lint hatalarından otomatik düzeltilebileceklerin de dosya kaydında düzeltilm
 
 Bu konuyla ilgili olarak lint-staged ve Husky konfigürasyonlarını da içeren daha kapsamlı bir döküman:https://paulintrognon.fr/blog/typescript-prettier-eslint-next-js
 
+#### airbnb Linter Konfigürasyonu ve Destructuring Assignment Kuralı
+
+Destructuring assignment (altta örneği mevcut) gibi iyi ES6 pratiklerinin de formatter tarafından uygun olduğu yerde kullanılması/önerilmesini istiyorsak, ilgili kuralları eslint ayarlarından aktifleştirmemiz gerekir.
+
+eslint'de `prefer-destructuring` kuralı mevcut. Bu tarz güzel kuralların aktif edildiği bir de konfigürasyon mevcut. airbnb'nin linter konfigürasyonunu projemize tanımlayarak bu konfigürasyona sahip olabiliriz.
+
+_Yönerge_
+`npx install-peerdeps --dev eslint-config-airbnb` ı çalıştırıp, 
+`.eslintrc.json` dosyasına `"extends"` keyinin array'ine `"airbnb"` stringini ekleyerek aktif edebiliriz.
+Kaynak: https://gist.github.com/bradtraversy/aab26d1e8983d9f8d79be1a9ca894ab4 
+
+Destructuring assignment örneği:
+
+```jsx
+const sampleObject = {
+  name: "John",
+  age: 25
+}
+
+const name = sampleObject.name
+// üstteki tanım yerine alttaki kullanım ile name değişkenine sampleObject.name'i atayabiliyoruz.
+// const { name } = sampleObject
+```
+**Yüklediğiniz airbnb config'inin [kaynak kodundan](https://github.com/airbnb/javascript/blob/366bfa66380c08304101c6add46355696e90b348/packages/eslint-config-airbnb-base/rules/es6.js#L123) `prefer-destructuring` in yer aldığı satırı görebilirsiniz.*
+
+
 #### SAYFA OLUŞTURMAK
 
 Sayfalar `pages` klasörü altında oluşturulur, sayfa bileşeni `default` olarak export edilmeli. (`export default function Hakkinda() {}` gibi)
